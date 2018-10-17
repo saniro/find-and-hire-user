@@ -1,0 +1,139 @@
+body{
+	background:#f4f4f4;
+}
+
+main{
+	background-color: #ADD8E6;
+}
+#titlenav{
+margin-left: 50px;
+font-size: 20px;
+font-family: century gothic;
+}
+
+.navbar{
+	min-height: 33px !important;
+	margin-bottom: 0;
+	border-radius: 0;
+
+}
+.navbar-nav > li > a, navbar-brand{
+	padding-top:6px !important;
+	padding-bottom:0 !important;
+	height:33px;
+}
+
+.historyTable{
+	margin-top: 20px;
+	border: 3px solid black;
+	border-radius: 30px;
+	background-color: #D3D3D3;
+    padding: 10px;
+}
+
+.wrapper{
+	margin-top: 50px;
+	height: 400px;
+	width: 500px;
+	border: 3px solid black;
+	border-radius: 30px;
+	background-color: #D3D3D3;
+}
+
+.label-1{
+	font-size: 20px;
+	font-family: century gothic;
+}
+.profileContainer{
+	height: 120px;
+	width: 120px;
+	margin-top: 30px;
+	border: 3px solid black;
+	background-color: #FAFAD2;
+    overflow:hidden;
+    position:relative;
+}
+
+.profileContainer img{
+    width: 150px; 
+    height: 150px;
+}
+
+.information1{
+	margin-left: 20px;
+}
+
+#btn-profileedit{
+}
+
+.inputModal{
+	height: 100px;
+	width: 100px;
+	margin-top: 7px;
+	margin-left: 10px;
+}
+#upload{
+	margin-top: 50px;
+	margin-right: 20px;
+	width: 210px; 
+	height: 40px;
+}
+#buttonSubmit{
+	height: 20px;
+	width: 40px;
+	border: 2px solid black;
+}
+ 
+.terms{
+	margin-top: 20px;
+}
+.text-service{
+	font-size: 20px;
+}
+
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+
+.preview{
+    width: 465px;
+    height: 265px;
+    border: 2px solid black;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
