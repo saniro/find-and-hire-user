@@ -23,14 +23,77 @@
 			<!--
 			CSS
 			============================================= -->
-			<link rel="stylesheet" href="landingpage/css/linearicons.css">
-			<link rel="stylesheet" href="landingpage/css/font-awesome.min.css">
-			<link rel="stylesheet" href="landingpage/css/jquery.DonutWidget.min.css">
-			<link rel="stylesheet" href="landingpage/css/bootstrap.css">
-			<link rel="stylesheet" href="landingpage/css/owl.carousel.css">
-			<link rel="stylesheet" href="landingpage/css/main.css">
-			<link rel="stylesheet" href="css/admin-loginStyles.css">
-			<link rel="stylesheet" type="text/css" href="style.css" >
+		<link rel="stylesheet" href="landingpage/css/linearicons.css">
+		<link rel="stylesheet" href="landingpage/css/font-awesome.min.css">
+		<link rel="stylesheet" href="landingpage/css/jquery.DonutWidget.min.css">
+		<link rel="stylesheet" href="landingpage/css/bootstrap.css">
+		<link rel="stylesheet" href="landingpage/css/owl.carousel.css">
+		<link rel="stylesheet" href="landingpage/css/main.css">
+		<link rel="stylesheet" href="css/admin-loginStyles.css">
+		<link rel="stylesheet" type="text/css" href="style.css" >
+        <script type="text/javascript">
+            function computeAge(){
+                var mdate = $("#Bday").val().toString();
+                var yearThen = parseInt(mdate.substring(0,4), 10);
+                var monthThen = parseInt(mdate.substring(5,7), 10);
+                var dayThen = parseInt(mdate.substring(8,10), 10);
+                
+                var today = new Date();
+                var birthday = new Date(yearThen, monthThen-1, dayThen);
+                
+                var differenceInMilisecond = today.valueOf() - birthday.valueOf();
+                
+                var year_age = Math.floor(differenceInMilisecond / 31536000000);
+                
+                if (isNaN(year_age)) {
+                    $("#age").text("Invalid birthday - Please try again!");
+                }
+                else {
+                    $('#age').html(year_age);
+                    if(year_age > 65){
+                        $('#status').html('You are too old.');
+                    }
+                    else if(year_age < 18){
+                        $('#status').html('You are too young.');
+                    }
+                    else{
+                        $('#status').html('Your age is in the range for the applicants.');
+                    }
+                }
+            }
+
+            function validateAge(){
+                var mdate = $("#Bday").val().toString();
+                var yearThen = parseInt(mdate.substring(0,4), 10);
+                var monthThen = parseInt(mdate.substring(5,7), 10);
+                var dayThen = parseInt(mdate.substring(8,10), 10);
+                
+                var today = new Date();
+                var birthday = new Date(yearThen, monthThen-1, dayThen);
+                
+                var differenceInMilisecond = today.valueOf() - birthday.valueOf();
+                
+                var year_age = Math.floor(differenceInMilisecond / 31536000000);
+                
+                if (isNaN(year_age)) {
+                    $("#age").text("Invalid birthday - Please try again!");
+                }
+                else {
+                    $('#age').html(year_age);
+                    if(year_age > 65){
+                        alert('You are too old.');
+                        return false;
+                    }
+                    else if(year_age < 18){
+                        alert('You are too young.');
+                        return false;
+                    }
+                    else{
+                        return true;
+                    }
+                }
+            }
+        </script>
 		</head>
 		<body>
 
@@ -42,7 +105,7 @@
 
 			<!-- Create Account -->
 			
-			<form method = "post" enctype="multipart/form-data">
+			<form method = "post" enctype="multipart/form-data" onsubmit="return validateAge();">
 				<div style="width: 500px; margin-left:100px; ">
 					<h3>Personal Information</h3>
 					<div class="form-group">
@@ -61,8 +124,16 @@
 					</div>
 					<div class="form-group">
 						<label>Birth Date:</label>
-						<input type="date" class="form-control" id="Bday" name = "birthDay" required/>
+						<input type="date" class="form-control" id="Bday" name = "birthDay" onchange = "computeAge();" required/>
 					</div>
+                    <div class="form-group">
+                        <label>Age:</label>
+                        <label class="form-control" id="age" name = "age">0</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Status:</label>
+                        <label class="form-control" id="status" name = "status">You are too young.</label>
+                    </div>
 					<div class="form-group">
 						<label>Gender:</label><br>
 						<input class = "radioButton" type="radio" name="gender" value="1"> Male<br>
@@ -98,7 +169,7 @@
                     <h3>Account</h3>
 					<div class="form-group">
 					    <label>Password:</label>
-					    <input type="password" class="form-control" id="Email" name = "password" placeholder="Password" required/>
+					    <input type="password" class="form-control" id="Password" name = "password" placeholder="Password" required/>
 					</div>
 					<div class="form-group">
 						<label for="securityQuestion">Security Question</label>
