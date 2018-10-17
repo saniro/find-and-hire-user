@@ -50,7 +50,7 @@
                 }
                 else {
                     $('#age').html(year_age);
-                    if(year_age > 65){
+                    if(year_age > 64){
                         $('#status').html('You are too old.');
                     }
                     else if(year_age < 18){
@@ -80,7 +80,7 @@
                 }
                 else {
                     $('#age').html(year_age);
-                    if(year_age > 65){
+                    if(year_age > 64){
                         alert('You are too old.');
                         return false;
                     }
@@ -105,7 +105,7 @@
 
 			<!-- Create Account -->
 			
-			<form method = "post" enctype="multipart/form-data" onsubmit="return validateAge();">
+			<form method = "post" enctype="multipart/form-data">
 				<div style="width: 500px; margin-left:100px; ">
 					<h3>Personal Information</h3>
 					<div class="form-group">
@@ -242,113 +242,119 @@
                             if(($_FILES['fileupload']['name']!="")){
                                 $filetype = $_FILES['fileupload']['type'];
                                 if ($filetype == 'image/jpeg' or $filetype = 'image/jpg' or $filetype == 'image/png'){
-                                    $target_dir = "../Images/";
-                                    $file = $_FILES['fileupload']['name'];
-                                    $path = pathinfo($file);
-                                    $filename = $path['filename'];
+                                    $bdate = $_POST['birthDay'];
+                                    $age = date_diff(date_create($bdate), date_create('now'))->y;
+                                    if(($age < 65) && ($age > 17)){
+                                        $target_dir = "../Images/";
+                                        $file = $_FILES['fileupload']['name'];
+                                        $path = pathinfo($file);
+                                        $filename = $path['filename'];
 
-                                    $temp = explode(".", $_FILES['fileupload']['name']);
-                                    $newfilename = round(microtime(true)) . '.' . end($temp);
+                                        $temp = explode(".", $_FILES['fileupload']['name']);
+                                        $newfilename = round(microtime(true)) . '.' . end($temp);
 
-                                    $ext = $path['extension'];
-                                    $temp_name = $_FILES['fileupload']['tmp_name'];
-                                    $path_filename_ext = $target_dir.$newfilename;
-                                    $path_filename_for_database = "../Images/".$newfilename;
-                                    
+                                        $ext = $path['extension'];
+                                        $temp_name = $_FILES['fileupload']['tmp_name'];
+                                        $path_filename_ext = $target_dir.$newfilename;
+                                        $path_filename_for_database = "../Images/".$newfilename;
+                                        
 
-                                    move_uploaded_file($temp_name,$path_filename_ext);
-                                    $firstName = $_POST['firstName'];
-                                    $middleName = $_POST['middleName'];
-                                    $lastName = $_POST['lastName'];
-                                    $birthDay = $_POST['birthDay'];
-                                    $houseNo = $_POST['houseNo'];
-                                    $street = $_POST['street'];
-                                    $barangay = $_POST['barangay'];
-                                    $city = $_POST['city'];
-                                    $gender = $_POST['gender'];
-                                    $email = $_POST['email'];
-                                    $contactNumber = $_POST['contactNumber'];
-                                    $password = $_POST['password'];
-                                    $securityQuestion = $_POST['securityQuestion'];
-                                    $answer = $_POST['answer'];
-                                    //$services = $_POST['services'];
-                                    $query = "INSERT INTO address (houseNo,street,barangay,city) VALUES (:houseNo,:street,:barangay,:city)";
-                                    $stmt = $con->prepare($query);
-                                    $stmt->bindParam(':houseNo', $houseNo, PDO::PARAM_STR);
-                                    $stmt->bindParam(':street', $street, PDO::PARAM_STR);
-                                    $stmt->bindParam(':barangay', $barangay, PDO::PARAM_STR);
-                                    $stmt->bindParam(':city', $city, PDO::PARAM_STR);                    
-                                    $result = $stmt->execute();
-
-                                    if($result){
-                                        $addressID = $con -> lastInsertId();
-                                        $query = "INSERT INTO users (firstName, middleName, lastName,addressID,gender,birthDate,email,contact,password,requestPic,lastLogin,Type) VALUES " .
-                                                "(:firstName, :middleName, :lastName,:addressID,:gender,:birthDate,:email,:contact,:password,:profilePicture,NOW(),2)";
+                                        move_uploaded_file($temp_name,$path_filename_ext);
+                                        $firstName = $_POST['firstName'];
+                                        $middleName = $_POST['middleName'];
+                                        $lastName = $_POST['lastName'];
+                                        $birthDay = $_POST['birthDay'];
+                                        $houseNo = $_POST['houseNo'];
+                                        $street = $_POST['street'];
+                                        $barangay = $_POST['barangay'];
+                                        $city = $_POST['city'];
+                                        $gender = $_POST['gender'];
+                                        $email = $_POST['email'];
+                                        $contactNumber = $_POST['contactNumber'];
+                                        $password = $_POST['password'];
+                                        $securityQuestion = $_POST['securityQuestion'];
+                                        $answer = $_POST['answer'];
+                                        //$services = $_POST['services'];
+                                        $query = "INSERT INTO address (houseNo,street,barangay,city) VALUES (:houseNo,:street,:barangay,:city)";
                                         $stmt = $con->prepare($query);
-                                        $stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR);
-                                        $stmt->bindParam(':middleName', $middleName, PDO::PARAM_STR);
-                                        $stmt->bindParam(':lastName', $lastName, PDO::PARAM_STR);
-                                        $stmt->bindParam(':addressID', $addressID, PDO::PARAM_STR);
-                                        $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
-                                        $stmt->bindParam(':birthDate', $birthDay, PDO::PARAM_STR);
-                                        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
-                                        $stmt->bindParam(':contact', $contactNumber, PDO::PARAM_STR);
-                                        $stmt->bindParam(':password', $password, PDO::PARAM_STR);
-                                        $stmt->bindParam(':profilePicture', $path_filename_for_database, PDO::PARAM_STR);
+                                        $stmt->bindParam(':houseNo', $houseNo, PDO::PARAM_STR);
+                                        $stmt->bindParam(':street', $street, PDO::PARAM_STR);
+                                        $stmt->bindParam(':barangay', $barangay, PDO::PARAM_STR);
+                                        $stmt->bindParam(':city', $city, PDO::PARAM_STR);                    
                                         $result = $stmt->execute();
 
                                         if($result){
-                                            $userID = $con -> lastInsertId();
-                                            $query = "INSERT INTO forgotpassword(questionID,userID,answer) VALUES (:questionID,:userID,:answer)";
+                                            $addressID = $con -> lastInsertId();
+                                            $query = "INSERT INTO users (firstName, middleName, lastName,addressID,gender,birthDate,email,contact,password,requestPic,lastLogin,Type) VALUES " .
+                                                    "(:firstName, :middleName, :lastName,:addressID,:gender,:birthDate,:email,:contact,:password,:profilePicture,NOW(),2)";
                                             $stmt = $con->prepare($query);
-                                            $stmt->bindParam(':questionID', $securityQuestion, PDO::PARAM_STR);
-                                            $stmt->bindParam(':userID', $userID, PDO::PARAM_STR);
-                                            $stmt->bindParam(':answer', $answer, PDO::PARAM_STR);
+                                            $stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR);
+                                            $stmt->bindParam(':middleName', $middleName, PDO::PARAM_STR);
+                                            $stmt->bindParam(':lastName', $lastName, PDO::PARAM_STR);
+                                            $stmt->bindParam(':addressID', $addressID, PDO::PARAM_STR);
+                                            $stmt->bindParam(':gender', $gender, PDO::PARAM_STR);
+                                            $stmt->bindParam(':birthDate', $birthDay, PDO::PARAM_STR);
+                                            $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+                                            $stmt->bindParam(':contact', $contactNumber, PDO::PARAM_STR);
+                                            $stmt->bindParam(':password', $password, PDO::PARAM_STR);
+                                            $stmt->bindParam(':profilePicture', $path_filename_for_database, PDO::PARAM_STR);
                                             $result = $stmt->execute();
 
                                             if($result){
-                                                $query = "INSERT INTO handymanservice(handymanID,serviceID) VALUES (:handymanID,:serviceID)";
-                                                $result = false;
-                                                foreach($_POST['services'] as $serviceID){
-                                                    $stmt = $con->prepare($query);
-                                                    $stmt->bindParam(':handymanID', $userID, PDO::PARAM_STR);
-                                                    $stmt->bindParam(':serviceID', $serviceID, PDO::PARAM_STR);
-                                                    $result = $stmt->execute();
-                                                }
+                                                $userID = $con -> lastInsertId();
+                                                $query = "INSERT INTO forgotpassword(questionID,userID,answer) VALUES (:questionID,:userID,:answer)";
+                                                $stmt = $con->prepare($query);
+                                                $stmt->bindParam(':questionID', $securityQuestion, PDO::PARAM_STR);
+                                                $stmt->bindParam(':userID', $userID, PDO::PARAM_STR);
+                                                $stmt->bindParam(':answer', $answer, PDO::PARAM_STR);
+                                                $result = $stmt->execute();
 
                                                 if($result){
-                                                    echo '<script> alert(\'Account successfully created\')</script>';
-                                                    $emailaddress = $email;
-                                                    $name = $firstName . ' ' . $middleName . ' ' . $lastName;
-                                                    $subject = 'Applying as Handyman';
-                                                    $message = 'Good Day, ' . $name . '!<br><br>For the verification of your requested account, please submit atleast one of the following requirements on the company : <br>';
-                                                    $queryRequirements = "SELECT name FROM requirementtype WHERE Flag = 1";
-                                                    $stmt = $con->prepare($queryRequirements);
-                                                    $stmt -> execute();
-                                                    $result = $stmt -> fetchAll();
-                                                    $rowCount = $stmt -> rowCount();
+                                                    $query = "INSERT INTO handymanservice(handymanID,serviceID) VALUES (:handymanID,:serviceID)";
+                                                    $result = false;
+                                                    foreach($_POST['services'] as $serviceID){
+                                                        $stmt = $con->prepare($query);
+                                                        $stmt->bindParam(':handymanID', $userID, PDO::PARAM_STR);
+                                                        $stmt->bindParam(':serviceID', $serviceID, PDO::PARAM_STR);
+                                                        $result = $stmt->execute();
+                                                    }
 
-                                                    if($rowCount > 0){
-                                                        foreach($result as $requirements){
-                                                            $message .=  $requirements['name'] .'<br>';
+                                                    if($result){
+                                                        echo '<script> alert(\'Account successfully created\')</script>';
+                                                        $emailaddress = $email;
+                                                        $name = $firstName . ' ' . $middleName . ' ' . $lastName;
+                                                        $subject = 'Applying as Handyman';
+                                                        $message = 'Good Day, ' . $name . '!<br><br>For the verification of your requested account, please submit atleast one of the following requirements on the company : <br>';
+                                                        $queryRequirements = "SELECT name FROM requirementtype WHERE Flag = 1";
+                                                        $stmt = $con->prepare($queryRequirements);
+                                                        $stmt -> execute();
+                                                        $result = $stmt -> fetchAll();
+                                                        $rowCount = $stmt -> rowCount();
+
+                                                        if($rowCount > 0){
+                                                            foreach($result as $requirements){
+                                                                $message .=  $requirements['name'] .'<br>';
+                                                            }
                                                         }
+                                                        else{
+                                                            $message .= 'There are no requirements to pass.';
+                                                        }
+                                                        sendMail($emailaddress, $name, $subject, $message);
+                                                    }else{
+                                                        echo '<script> alert(\'Insert service problem\')</script>';
                                                     }
-                                                    else{
-                                                        $message .= 'There are no requirements to pass.';
-                                                    }
-                                                    sendMail($emailaddress, $name, $subject, $message);
-                                                }else{
-                                                    echo '<script> alert(\'Insert service problem\')</script>';
-                                                }
 
+                                                }else{
+                                                    echo '<script> alert(\'Insert forgot password problem\')</script>';
+                                                }
                                             }else{
-                                                echo '<script> alert(\'Insert forgot password problem\')</script>';
+                                                echo '<script> alert(\'Insert users problem\')</script>';
                                             }
                                         }else{
-                                            echo '<script> alert(\'Insert users problem\')</script>';
+                                            echo '<script> alert(\'Insert address problem\')</script>';
                                         }
                                     }else{
-                                        echo '<script> alert(\'Insert address problem\')</script>';
+                                        echo '<script>alert(\'Too old or too young\');</script>';
                                     }
                                 }else{
                                     echo '<script> alert(\'File type problem\')</script>';
