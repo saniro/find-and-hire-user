@@ -49,6 +49,9 @@
                 $city = $results['city'];
                 $bday = $results['Bday'];
                 $contact = $results['contact'];
+                $contactPerson = $results['emergencyPerson'];
+                $contactPersonNo = $results['emergencyNumber'];
+                $contactPersonRel = $results['emergencyRelations'];
                 $gender = $results['gender'];
                 $age = $results['age'];
                 $editBday = $results['birthDate'];
@@ -191,6 +194,24 @@
                                                             <input type="text" name = "contact" class="form-control" placeholder="Mobile no." value = "<?php echo $contact?>">
                                                         </div>
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label>Contact Person:</label>
+                                                        <div class="input-group">
+                                                            <input type="text" name = "contactPerson" class="form-control" placeholder="Contact Person" value = "<?php echo $contactPerson; ?>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Contact Person Number:</label>
+                                                        <div class="input-group">
+                                                            <input type="text" name = "contactPersonNo" class="form-control" placeholder="Contact Person Number" value = "<?php echo $contactPersonNo; ?>" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Contact Person Relationship:</label>
+                                                        <div class="input-group">
+                                                            <input type="text" name = "contactPersonRel" class="form-control" placeholder="Contact Person Relationship" value = "<?php echo $contactPersonRel; ?>" required>
+                                                        </div>
+                                                    </div>
                                                     <center><button type="submit" name = "saveAddress" class="btn btn-primary">Save</button></center>
                                                 </form>
                                                 <?php
@@ -200,11 +221,14 @@
                                                         $barangay = $_POST['barangay'];
                                                         $city = $_POST['city'];
                                                         $contact = $_POST['contact'];
+                                                        $u_contactPerson = $_POST['contactPerson'];
+                                                        $u_contactPersonNo = $_POST['contactPersonNo'];
+                                                        $u_contactPersonRel = $_POST['contactPersonRel'];
                                                         
                                                         $con = new PDO("mysql:host=localhost; dbname=handyman", "root", "");
                                                         $con -> setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
                                                         $query = "UPDATE users u INNER JOIN address a ON u.addressID = a.addressID 
-                                                            SET houseNo = :houseNo, street = :street, barangay = :barangay, city = :city, contact = :contact 
+                                                            SET houseNo = :houseNo, street = :street, barangay = :barangay, city = :city, contact = :contact, emergencyPerson = :contactPerson, emergencyNumber = :contactPersonNo, emergencyRelations = :contactPersonRel 
                                                             WHERE userID = :userID";
                                                         $stmt = $con->prepare($query);
                                                         $stmt -> bindParam(':houseNo', $houseNo, PDO::PARAM_STR);
@@ -212,6 +236,9 @@
                                                         $stmt -> bindParam(':barangay', $barangay, PDO::PARAM_STR);
                                                         $stmt -> bindParam(':city', $city, PDO::PARAM_STR);
                                                         $stmt -> bindParam(':contact', $contact, PDO::PARAM_STR);
+                                                        $stmt -> bindParam(':contactPerson', $u_contactPerson, PDO::PARAM_STR);
+                                                        $stmt -> bindParam(':contactPersonNo', $u_contactPersonNo, PDO::PARAM_STR);
+                                                        $stmt -> bindParam(':contactPersonRel', $u_contactPersonRel, PDO::PARAM_STR);
                                                         $stmt -> bindParam(':userID', $_SESSION['userID'], PDO::PARAM_INT);
                                                         $result = $stmt -> execute();
                                                         if($result){

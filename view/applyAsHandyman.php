@@ -160,12 +160,24 @@
 					<h3>Contact Information</h3>
 					<div class="form-group">
 					    <label>Email:</label>
-					    <input type="text" class="form-control" id="Email" name = "email" placeholder="Email" required/>
+					    <input type="email" class="form-control" id="Email" name = "email" placeholder="Email" required/>
 					</div>
 					<div class="form-group">
 					    <label>Contact Number:</label>
 					    <input type="text" class="form-control" id="contactNumber" name = "contactNumber" placeholder="Mobile No./Tel. No." required/>
 					</div>
+                    <div class="form-group">
+                        <label>Contact Person:</label>
+                        <input type="text" class="form-control" id="contactPerson" name = "contactPerson" placeholder="Contact Person" required/>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Person Number:</label>
+                        <input type="text" class="form-control" id="contactPersonNo" name = "contactPersonNo" placeholder="Mobile No./Tel. No." required/>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Person Relationship:</label>
+                        <input type="text" class="form-control" id="contactPersonRel" name = "contactPersonRel" placeholder="Contact Person Relationship" required/>
+                    </div>
                     <h3>Account</h3>
 					<div class="form-group">
 					    <label>Password:</label>
@@ -236,7 +248,6 @@
             
 			<!-- Create Account -->
             <?php
-            
                     if(isset($_POST['btnSubmit'])){
                         if(isset($_POST['termCondition'])){
                             if(($_FILES['fileupload']['name']!="")){
@@ -271,6 +282,9 @@
                                         $gender = $_POST['gender'];
                                         $email = $_POST['email'];
                                         $contactNumber = $_POST['contactNumber'];
+                                        $contactPerson = $_POST['contactPerson'];
+                                        $contactPersonNo = $_POST['contactPersonNo'];
+                                        $contactPersonRel = $_POST['contactPersonRel'];
                                         $password = $_POST['password'];
                                         $securityQuestion = $_POST['securityQuestion'];
                                         $answer = $_POST['answer'];
@@ -285,8 +299,8 @@
 
                                         if($result){
                                             $addressID = $con -> lastInsertId();
-                                            $query = "INSERT INTO users (firstName, middleName, lastName,addressID,gender,birthDate,email,contact,password,requestPic,lastLogin,Type) VALUES " .
-                                                    "(:firstName, :middleName, :lastName,:addressID,:gender,:birthDate,:email,:contact,:password,:profilePicture,NOW(),2)";
+                                            $query = "INSERT INTO users (firstName, middleName, lastName,addressID,gender,birthDate,email,contact,password,profilepicture,emergencyPerson,emergencyNumber,emergencyRelations,lastLogin,Type) VALUES " .
+                                                    "(:firstName, :middleName, :lastName,:addressID,:gender,:birthDate,:email,:contact,:password,:profilePicture,:contactPerson, :contactPersonNo, :contactPersonRel, NOW(),2)";
                                             $stmt = $con->prepare($query);
                                             $stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR);
                                             $stmt->bindParam(':middleName', $middleName, PDO::PARAM_STR);
@@ -298,6 +312,9 @@
                                             $stmt->bindParam(':contact', $contactNumber, PDO::PARAM_STR);
                                             $stmt->bindParam(':password', $password, PDO::PARAM_STR);
                                             $stmt->bindParam(':profilePicture', $path_filename_for_database, PDO::PARAM_STR);
+                                            $stmt->bindParam(':contactPerson', $contactPerson, PDO::PARAM_STR);
+                                            $stmt->bindParam(':contactPersonNo', $contactPersonNo, PDO::PARAM_STR);
+                                            $stmt->bindParam(':contactPersonRel', $contactPersonRel, PDO::PARAM_STR);
                                             $result = $stmt->execute();
 
                                             if($result){
