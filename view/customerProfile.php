@@ -59,6 +59,13 @@
                 $securityQuestion = $results['questionID'];
                 $answer = $results['answer'];
                 $profilePic = $results['profilepicture'];
+
+                $sqlRating = "SELECT (SELECT (SELECT customerID FROM booking AS BG WHERE BG.bookingID = TN.bookingID) FROM transaction AS TN WHERE TN.transactionID = FK.transactID) AS customer, transactID, userID, (SELECT CASE WHEN Type = 1 THEN 'Customer' WHEN Type = 2 THEN 'Handyman' END FROM users AS US WHERE US.userID = FK.userID) AS rater, ROUND(AVG(rating),2) AS rating FROM feedback AS FK WHERE (SELECT Type FROM users AS US WHERE US.userID = FK.userID) = 2 AND (SELECT (SELECT customerID FROM booking AS BG WHERE BG.bookingID = TN.bookingID) FROM transaction AS TN WHERE TN.transactionID = FK.transactID) = :customerID GROUP BY (SELECT (SELECT customerID FROM booking AS BG WHERE BG.bookingID = TN.bookingID) FROM transaction AS TN WHERE TN.transactionID = FK.transactID)";
+                $stmt = $con->prepare($sqlRating);
+                $stmt->bindParam(':customerID', $_SESSION['userID'], PDO::PARAM_INT);
+                $stmt->execute();
+                $rowRating = $stmt->fetch();
+                $rating = $rowRating['rating'];
             }
         ?>
 
@@ -89,6 +96,10 @@
                             <tr>
                                 <td class="label-1">Contact:</td>
                                 <td class="label-1"><?php echo $contact;?></td>
+                            </tr>
+                            <tr>
+                                <td class="label-1">Rating:</td>
+                                <td class="label-1"><?php echo $rating;?></td>
                             </tr>
                            </table>  
                             <button type="button" id="btn-profileedit" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myLogin">EDIT</button>
