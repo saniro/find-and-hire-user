@@ -299,7 +299,7 @@
 
                                         if($result){
                                             $addressID = $con -> lastInsertId();
-                                            $query = "INSERT INTO users (firstName, middleName, lastName,addressID,gender,birthDate,email,contact,password,profilepicture,emergencyPerson,emergencyNumber,emergencyRelations,lastLogin,Type) VALUES " .
+                                            $query = "INSERT INTO users (firstName, middleName, lastName,addressID,gender,birthDate,email,contact,password,profilepicture,emergencyPerson,emergencyNumber,emergencyRelationship,lastLogin,Type) VALUES " .
                                                     "(:firstName, :middleName, :lastName,:addressID,:gender,:birthDate,:email,:contact,:password,:profilePicture,:contactPerson, :contactPersonNo, :contactPersonRel, NOW(),2)";
                                             $stmt = $con->prepare($query);
                                             $stmt->bindParam(':firstName', $firstName, PDO::PARAM_STR);
